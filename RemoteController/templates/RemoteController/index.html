@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Automation</title>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}"> 
+</head>
+<body>
+    {% for device in devices %}
+    <div id="div_{{device.id}}">
+        <img src="/static/svg/icon-{{device.icon}}.svg" id="img_{{device.id}}">
+        <input type="button" id="device_{{device.id}}" class = "button" value={{device.status}}>
+    </div>
+    <style>
+        img{
+            height: 50px;
+            width: 40px;
+            object-fit: contain;
+        }
+    </style>
+    <script>
+        document.querySelector('#device_{{device.id}}').onclick = function(e) {
+        var device = document.querySelector('#device_{{device.id}}');
+        var device_value = 100-device.value;
+        var device_id = '{{device.id}}';
+        sendData(device_id,device_value);
+    };
+        document.querySelector('#img_{{device.id}}').onclick = function(e) {
+            //add code to show list of icons with good css
+        };
+    </script>
+    {% endfor %}
+    
+    <script>
+        const deviceName = 'ESP32';
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/RemoteController/'
+            + deviceName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data)
+            document.querySelector('#device_'+data['message']['device_id']).value = (data['message']['device_value']);
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        function sendData(device_id,device_value){
+            chatSocket.send(JSON.stringify({
+                'device_id': device_id,
+                'device_value':device_value
+            }));
+        }
+    </script>
+</body>
+</html>

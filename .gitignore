@@ -1,0 +1,11 @@
+Lib
+Scripts
+db.sqlite3
+pyvenv.cfg
+.vscode
+share
+RemoteController/migrations
+RemoteController/firebase_credentials.py
+RemoteController/__pycache__
+mysite/__pycache__
+mysite/djangoSecretKey.py
