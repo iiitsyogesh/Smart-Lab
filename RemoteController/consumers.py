@@ -53,7 +53,7 @@ class HomeConsumer(AsyncWebsocketConsumer):
                 }
             }
         )
-        db.child("user").child(device_id).update({"status":device_value})
+        db.child("deviladi00").child(device_id).update({"status":device_value})
     
     async def home_message(self, event):
         message = event["message"]
@@ -77,5 +77,5 @@ def stream_handler(message):
                 }
             )
         
-db.child("user").stream(stream_handler)
+db.child("deviladi00").stream(stream_handler)
         
