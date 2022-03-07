@@ -9,3 +9,4 @@ RemoteController/firebase_credentials.py
 RemoteController/__pycache__
 mysite/__pycache__
 mysite/djangoSecretKey.py
+.env
