@@ -7,15 +7,8 @@ from asgiref.sync import async_to_sync
 channel_layer = get_channel_layer()
 
 import pyrebase
-firebaseConfig = {
-    'apiKey': "AIzaSyD0TftQQlr--6pSMyUXzw5QT4pFM1kB-HM",
-    'authDomain': "smart-home-16c6c.firebaseapp.com",
-    'databaseURL': "https://smart-home-16c6c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    'projectId': "smart-home-16c6c",
-    'storageBucket': "smart-home-16c6c.appspot.com",
-    'messagingSenderId': "1020150526141",
-    'appId': "1:1020150526141:web:d0ef2d2dd41178838447d4"
-}
+
+from .firebase_credentials import firebaseConfig
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 
@@ -53,7 +46,7 @@ class HomeConsumer(AsyncWebsocketConsumer):
                 }
             }
         )
-        db.child("deviladi00").child(device_id).update({"status":device_value})
+        db.child("lab").child(device_id).update({"status":device_value})
     
     async def home_message(self, event):
         message = event["message"]
@@ -77,5 +70,5 @@ def stream_handler(message):
                 }
             )
         
-db.child("deviladi00").stream(stream_handler)
+db.child("lab").stream(stream_handler)
         
